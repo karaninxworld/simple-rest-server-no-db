@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+    <title>"Server 1"</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<div>
+    <form id="fm">
+        <input type="text" name="FirstName">
+        <input type="text" name="LastName">
+        <input id="d" type="submit" value="Submit">
+    </form>
+</div>
+<table data-role= "table" >
+    <thead id="j">
+    <tr>
+        <th>Customer ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+    </tr>
+
+    </thead>
+</table>
+<script>
+    $(document).ready(function() {
+        var counter;
+        $("#d").on("click", function (e) {
+            e.preventDefault();
+            var firstName  = $("input")[0].value;
+            var lastName = $("input")[1].value;
+            var data1 = {
+                FirstName: firstName,
+                LastName: lastName
+            };
+            if(counter){
+                $.ajax({
+                    url: "/Persons", type: "POST", data: data1, success: function (response) {
+                        $("#j").append(`<tr><td>${response.id}</td><td>${response.FirstName}</td><td>${response.LastName}</td></tr>`);
+                    }
+                });
+            }
+
+            else {
+                $.ajax({
+                   url: "/Persons", type: "POST", data: data1}).then($.ajax({
+                    url: "/Persons", type: "GET", dataType: "json", success: function (data) {
+                        var result = "";
+                        for (var i = 0; i <= data.length - 1; i++) {
+                            result += '<tr><td>' + data[i].id + '</td><td>' + data[i].FirstName + '</td><td>' + data[i].LastName + '</td></tr>';
+                        }
+                        $("#j").append(result);
+                    }
+
+                }));
+//                    success: function (data) {
+//                        var result = "";
+//                        for (var i = 0; i <= data.length - 1; i++) {
+//                            result += '<tr><td>' + data[i].id + '</td><td>' + data[i].FirstName + '</td><td>' + data[i].LastName + '</td></tr>';
+//                        }
+//                        $("#j").append(result + '<tr><td> 12 </td><td>' + firstName + '</td><td>' + lastName + '</td></tr>');
+//                    }
+
+                //});
+                counter = 1;
+            }
+        });
+    });
+//        });
+//            $.post("/persons", data).then(function (response) {
+////                    $("#fm").append(data);
+//                $("#j").append(`<tr><td>${response.id}</td><td>${response.FirstName}</td><td>${response.LastName}</td></tr>`);
+//            })
+//        });
+//    });
+////    (function () {
+////        $.get("/persons", function (data) {
+////            var result = "";
+////            for (var i = 0; i <= data.length - 1; i++) {
+//////                       result += '<tr><td>' +data[i].id+ '</td><td>' + data[i].FirstName + '</td><td>' +data[i].LastName + '</td></tr>';
+////                result += `<tr><td>${data[i].id}</td><td>${data[i].FirstName}</td><td>${data[i].LastName}</td></tr>`;
+////            }
+////            cc
+//
+////            });
+////            $("#d").on("click",function (e) {
+////                e.preventDefault();
+////                alert("asga");
+////                $.post("/users", {FirstName: "Karan", LastName: "Gajjar"});
+//
+////            });
+//
+//        });
+//    })();
+
+</script>
+</body>
+</html>
