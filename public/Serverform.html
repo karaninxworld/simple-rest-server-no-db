@@ -31,30 +31,31 @@
                     FirstName: $("input")[0].value,
                     LastName: $("input")[1].value
                 };
-                $.post("/users", data1).then(function (response) {
-                    $("#j").append(`<tr><td>${response.id}</td><td>${response.FirstName}</td><td>${response.LastName}</td></tr>`);
+                if (counter) {
+                    $.post("/users", data1).then(function (response) {
+                        $("#j").append(`<tr><td>${response.id}</td><td>${response.FirstName}</td><td>${response.LastName}</td></tr>`);
 
-                });
-
-            if(!counter){
-                $.get("/users", function (data) {
-                    var result = "";
-                    for (var i = 0; i <= data.length - 1; i++) {
-                        result += '<tr><td>' + data[i].id + '</td><td>' + data[i].FirstName + '</td><td>' + data[i].LastName + '</td></tr>';
-                        //result += `<tr><td>${data[i].id}</td><td>${data[i].FirstName}</td><td>${data[i].LastName}</td></tr>`;
-                    }
-                    $("#j").append(result);
-                    console.log($("INPUT")[2]);
+                    });
+                }else {
+                    $.post("/users", data1).then($.get("/users", function (data) {
+                            var result = "";
+                            for (var i = 0; i <= data.length - 1; i++) {
+                                result += '<tr><td>' + data[i].id + '</td><td>' + data[i].FirstName + '</td><td>' + data[i].LastName + '</td></tr>';
+                                //result += `<tr><td>${data[i].id}</td><td>${data[i].FirstName}</td><td>${data[i].LastName}</td></tr>`;
+                            }
+                            $("#j").append(result);
+                            console.log($("INPUT")[2]);
 //                    $("input")[2].removeAttribute("id");
 //                    $("input")[2].setAttribute("id", "d");
-                    //$("#d").removeAttr("id","t");
+                            //$("#d").removeAttr("id","t");
 
-                });
-                counter = 1;
-            }
+                        }));
+                        counter = 1;
+                    }
+                })
 
-            });
-        });
+            })
+
     </script>
 </body>
 </html>
