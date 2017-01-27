@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <title>Bootstrap</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            .glyphicon.glyphicon-remove-sign{
+                font-size: 20px;
+            }
+            .btn1{
+                background-color: #337ab7;
+                border-color: #2e6da4;
+                color: #fff;
+                height: 34px;
+                width: 69px;
+                border-radius: 4px;
+                ont-size: 14px;
+                font-weight: 400;
+                line-height: 1.42857;
+                margin-bottom: 0;
+                padding: 6px 12px;
+                text-align: center;
+                vertical-align: middle;
+                white-space: nowrap;
+            }
+            #btn2{
+                background: -webkit-linear-gradient(right bottom, #f5f5f5, gray); /* For Safari 5.1 to 6.0 */
+                background: -o-linear-gradient(top left, #f5f5f5, gray); /* For Opera 11.1 to 12.0 */
+                background: -moz-linear-gradient(top left, #f5f5f5, gray); /* For Firefox 3.6 to 15 */
+                background: linear-gradient(to top left, #f5f5f5, gray); /* Standard syntax */
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse" style="border-radius: 0">
+            <div class="container-fluid">
+                <div class="navbar-header" style="margin: 0 0 0 30px">
+                    <a class="navbar-brand" href="#">Store</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Catalogue</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class= "row container-fluid">
+                <div class="col-md-3">
+                    <a href="#" class="list-group-item active">Cras justo odio</a>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="list-group-item">Morbi leo risus</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                    <a href="#" class="list-group-item">Vestibulum at eros</a>
+                    </div>
+                </div>
+                    <br/>
+                </div>
+                <div class="col-md-9" id="dt">
+                    <form class="form-inline" role="form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="srch">Search</label>
+                                        <input type = "text" class = "form-control" id="srch" placeholder="Search by item name" name="search">
+                                    </div>
+                                </div>
+                            </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="ai">Add Item</label>
+                                    <input type="text" class="form-control" id="ai" placeholder="Item Name" name="addItem" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" id="dpn" placeholder="Description" name="description" required="required">
+                                </div>
+                                <div class="form-group">
+                                        <input type="text" class="form-control" id="pr"  pattern="[0-9]" maxlength="6" placeholder="Price" name="price" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="ADD" id="btn2" class="btn btn-default">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br/>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $.ajax({
+                    url: "/datas", type: "GET", dataType: "json", success: function (data) {
+                        var result = "";
+                        $.each(data, function (i, value) {
+                            result += '<div class="panel panel-default col-md-12"><div class="panel-heading row"><div class="col-xs-7"><h2>' + value.addItem + '</h2><p>' + value.description + '</p></div><div class="col-xs-3"><br/><div class="btn1">' + value.price + '</div></div><div class="col-xs-2"><br/><span id = "'+ value.id + '" style="cursor: pointer" class="glyphicon glyphicon-remove-sign"></span></div></div></div>';
+                        });
+                        $("#dt").append(result);
+                    }
+                });
+                $("#btn2").on("click", function () {
+//                    e.preventDefault();
+                    var srh = $("input")[0].value;
+                    var adit = $("input")[1].value;
+                    var dscr = $("input")[2].value;
+                    var Price = $("input")[3].value;
+
+                    var data1 = {
+                        search: srh,
+                        addItem: adit,
+                        description: dscr,
+                        price: Price
+                    };
+                    if (adit && dscr && !isNaN(Price) && Price) {
+                         $.ajax({
+                            url: "/datas",
+                            type: "POST",
+                            data: data1,
+                            success: function (response) {
+                                $("#dt").append('<div class="panel panel-default col-md-12"><div class="panel-heading row"><div class="col-xs-7"><h2>' + response.addItem + '</h2><p>' + response.description + '</p></div><div class="col-xs-3"><br/><div class="btn1">' + response.price + '</div></div><div class="col-xs-2"><br/><span id = "' + response.id + '" style="cursor: pointer" class="glyphicon glyphicon-remove-sign"></span></div></div></div>');
+                            }
+                        });
+                         $("form")[0].reset();
+                    }
+                });
+                $("#dt").on("click", ".glyphicon.glyphicon-remove-sign", function () {
+                    var t = $(this);
+                    var k = t[0].id;
+                    $.ajax({
+                        url: "/datas/" + k,
+                        type: "DELETE",
+                        dataType: "json", success: function () {
+                            var z = $(".panel.panel-default.col-md-12");
+                            t.closest(z).remove();
+                        }
+                    });
+                })
+            })
+        </script>
+    </body>
+</html>
