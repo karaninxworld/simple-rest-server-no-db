@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <title>Angular</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <style>
+            .glyphicon.glyphicon-remove-sign{
+                font-size: 20px;
+            }
+            .btn1{
+                background-color: #337ab7;
+                border-color: #2e6da4;
+                color: #fff;
+                height: 34px;
+                width: 69px;
+                border-radius: 4px;
+                ont-size: 14px;
+                font-weight: 400;
+                line-height: 1.42857;
+                margin-bottom: 0;
+                padding: 6px 12px;
+                text-align: center;
+                vertical-align: middle;
+                white-space: nowrap;
+            }
+            #btn2{
+                background: -webkit-linear-gradient(right bottom, #f5f5f5, gray); /* For Safari 5.1 to 6.0 */
+                background: -o-linear-gradient(top left, #f5f5f5, gray); /* For Opera 11.1 to 12.0 */
+                background: -moz-linear-gradient(top left, #f5f5f5, gray); /* For Firefox 3.6 to 15 */
+                background: linear-gradient(to top left, #f5f5f5, gray); /* Standard syntax */
+            }
+        </style>
+    </head>
+    <body ng-app="myApp">
+        <nav class="navbar navbar-inverse" style="border-radius: 0">
+            <div class="container-fluid">
+                <div class="navbar-header" style="margin: 0 0 0 30px">
+                    <a class="navbar-brand" href="#">Store</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Catalogue</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class= "row container-fluid">
+                <div class="col-md-3">
+                    <a href="#" class="list-group-item active">Cras justo odio</a>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="list-group-item">Morbi leo risus</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                    <a href="#" class="list-group-item">Vestibulum at eros</a>
+                    </div>
+                </div>
+                    <br/>
+                </div>
+                <div class="col-md-9" id="dt" ng-controller = "ctrl">
+                    <form class="form-inline" role="form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="srch">Search</label>
+                                        <input type = "text" class = "form-control" placeholder="Search by item name" name="search">
+                                    </div>
+                                </div>
+                            </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="ai">Add Item</label>
+                                    <input type="text" ng-model="addItem" class="form-control" placeholder="Item Name" name="addItem" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" ng-model = "description" placeholder="Description" name="description" required="required">
+                                </div>
+                                <div class="form-group">
+                                        <input type="text" ng-model = "price" class="form-control" ngPattern = "number" maxlength="6" placeholder="Price" name="price" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" ng-click="add()" value="ADD" class="btn btn-default">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br/>
+                    <div class="panel panel-default col-md-12" ng-repeat="items in addItems">
+                        <div class="panel-heading row">
+                            <div class="col-xs-7">
+                                <h2>{{items.addItem}}</h2>
+                                <p>{{items.description}}</p>
+                            </div>
+                            <div class="col-xs-3"><br/>
+                                <div class="btn1">${{items.price}}</div>
+                            </div>
+                            <div class="col-xs-2">
+                            <br/>
+                                <span id="{{items.id}}" style="cursor: pointer" class="glyphicon glyphicon-remove-sign"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default col-md-12" ng-repeat = "users in addUsers" >
+                        <div class="panel-heading row">
+                            <div class="col-xs-7">
+                                <h2>{{users.addItem}}</h2>
+                                <p>{{users.description}}</p>
+                            </div>
+                            <div class="col-xs-3"><br/>
+                                <div class="btn1">${{users.price}}</div>
+                            </div>
+                            <div class="col-xs-2">
+                                <br/>
+                                <span id="{{users.id}}" style="cursor: pointer" class="glyphicon glyphicon-remove-sign"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            angular.module("myApp",[]).controller("ctrl", function ($scope, $http) {
+                $http.get("/datas").success(function (response) {
+                    $scope.addItems = response
+                });
+                $scope.add = function () {
+                    var data1 = {
+                        addItem :$scope.addItem,
+                        description : $scope.description,
+                        price: $scope.price,
+                        id: $scope.id
+                    };
+                    $http.post("/datas", data = data1).success(function (response) {
+                        $scope.addItems.push(response);
+                    })
+                };
+            });
+        </script>
+    </body>
+</html>
