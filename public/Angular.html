@@ -98,7 +98,7 @@
                                     <input class="form-control" ng-model = "description" placeholder="Description" name="description" required="required">
                                 </div>
                                 <div class="form-group">
-                                        <input type="text" ng-model = "price" class="form-control" ngPattern = "number" maxlength="6" placeholder="Price" name="price" required="required">
+                                        <input type="text" ng-model = "price" class="form-control"  maxlength="6" placeholder="Price" name="price" required="required">
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" ng-click="add()" value="ADD" class="btn btn-default">
@@ -118,22 +118,7 @@
                             </div>
                             <div class="col-xs-2">
                             <br/>
-                                <span id="{{items.id}}" style="cursor: pointer" class="glyphicon glyphicon-remove-sign"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default col-md-12" ng-repeat = "users in addUsers" >
-                        <div class="panel-heading row">
-                            <div class="col-xs-7">
-                                <h2>{{users.addItem}}</h2>
-                                <p>{{users.description}}</p>
-                            </div>
-                            <div class="col-xs-3"><br/>
-                                <div class="btn1">${{users.price}}</div>
-                            </div>
-                            <div class="col-xs-2">
-                                <br/>
-                                <span id="{{users.id}}" style="cursor: pointer" class="glyphicon glyphicon-remove-sign"></span>
+                                <span id="{{items.id}}" ng-click="remove(items.id, $index)" style="cursor: pointer" class="glyphicon glyphicon-remove-sign"></span>
                             </div>
                         </div>
                     </div>
@@ -152,10 +137,21 @@
                         price: $scope.price,
                         id: $scope.id
                     };
-                    $http.post("/datas", data = data1).success(function (response) {
-                        $scope.addItems.push(response);
-                    })
+                    if($scope.addItem && $scope.description && $scope.price && !isNaN($scope.price)) {
+                        $http.post("/datas", data = data1).success(function (response) {
+                            $scope.addItems.push(response);
+                        });
+                        $scope.addItem = null;
+                        $scope.description = null;
+                        $scope.price = null
+                    }
                 };
+                $scope.remove= function (e, i) {
+                    $http.delete("/datas/"+ e).success(function () {
+//                        console.log(i);
+                        $scope.addItems.splice(i,1);
+                     })
+                }
             });
         </script>
     </body>
