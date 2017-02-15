@@ -82,7 +82,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="srch">Search</label>
+                                        <label>Search</label>
                                         <input type = "text" class = "form-control" placeholder="Search by item name" name="search">
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="ai">Add Item</label>
+                                    <label>Add Item</label>
                                     <input type="text" ng-model="addItem" class="form-control" placeholder="Item Name" name="addItem" required="required">
                                 </div>
                                 <div class="form-group">
@@ -148,7 +148,6 @@
                 };
                 $scope.remove= function (e, i) {
                     $http.delete("/datas/"+ e).success(function () {
-//                        console.log(i);
                         $scope.addItems.splice(i,1);
                      })
                 }
